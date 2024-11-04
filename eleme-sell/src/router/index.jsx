@@ -4,7 +4,7 @@ import App from '../App'
 
 const Goods = lazy(() => import('../components/Goods'))
 const Ratings = lazy(() => import('../components/Ratings'))
-const Sellers = lazy(() => import('../components/Sellers'))
+const Seller = lazy(() => import('../components/Seller'))
 
 // react-router-dom文档 https://reactrouter.com/en/main/start/tutorial
 export const router = [
@@ -29,9 +29,9 @@ export const router = [
                 </Suspense>
             },
             {
-                path: '/sellers',
+                path: '/seller',
                 element: <Suspense fallback={<div>Loading...</div>}>
-                    <Sellers/>
+                    <Seller/>
                 </Suspense>
             }
     ]

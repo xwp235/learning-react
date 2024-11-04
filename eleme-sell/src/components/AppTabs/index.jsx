@@ -15,7 +15,7 @@ function AppTabs() {
         },
         {
             title: '商家',
-            path: '/sellers'
+            path: '/seller'
         }
     ].map((tabItem, index) => <div className="tab-item" key={index}>
         <NavLink to={tabItem.path}>{tabItem.title}</NavLink>
