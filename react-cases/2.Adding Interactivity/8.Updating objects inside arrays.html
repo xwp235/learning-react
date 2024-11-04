@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>在数组中更新对象</title>
+</head>
+<body>
+    <section>
+        对象实际上并不真正“位于”数组内部。尽管在代码中看起来它们像是“在”数组内，但数组中的每个对象都是一个独立的值，数组只是“指向”它们。这就是为什么更改嵌套字段（例如 list[0]）时需要小心，因为另一个人的作品列表可能会指向数组中的相同元素！
+    </section>
+    <section>
+    在更新嵌套状态时，需要从更新点开始一路向上创建副本，直到顶层。来看一下这是如何工作的。
+    </section>
+    <section>
+      在以下示例中，有两个独立的作品列表，初始状态相同。它们本应是独立的，但由于意外的状态更改，状态被共享了，导致在一个列表中勾选一个复选框会影响另一个列表。
+    </section>
+    <div id="incorrect-app"></div>
+    <section>
+        尽管 myNextList 数组本身是新的，但其中的各个项与原始的 myList 数组中的项是相同的。因此，更改 artwork.seen 会修改原始的 artwork 项。而该 artwork 项也存在于 yourList 中，这就引发了问题。这类问题可能难以理解，但幸运的是，如果避免修改状态，这些问题将自然消失。
+    </section>
+    <section>
+        你可以使用 map 来替换旧的项为其更新版本，而不进行状态的修改。
+    </section>
+    <section>
+        在这里，... 是对象扩展语法，用于创建对象的副本。<br/>
+        通过这种方法，现有的状态项没有被修改，从而修复了这个问题：
+    </section>
+    <div id="correct-app"></div>
+    <section>
+        一般来说，你只应该修改刚刚创建的对象。如果你正在插入一件新作品，可以直接修改它；但如果你处理的是已经在状态中的对象，就需要先创建一个副本。
+    </section>
+
+    <script src="../../scripts/@babel/7.26.0/babel.min.js"></script>
+    <script src="../../scripts/react/18.3.1/react.development.js"></script>
+    <script src="../../scripts/react/18.3.1/react-dom.development.js"></script>
+    <script type="text/babel">
+        const initialList = [
+            { id: 0, title: 'Big Bellies', seen: false },
+            { id: 1, title: 'Lunar Landscape', seen: false },
+            { id: 2, title: 'Terracotta Army', seen: true }
+        ]
+
+        function ItemList({ artworks, onToggle }) {
+            return (
+                <ul>
+                    {artworks.map(artwork => (
+                        <li key={artwork.id}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={artwork.seen}
+                                    onChange={e => onToggle(artwork.id, e.target.checked)}
+                                />
+                                {artwork.title}
+                            </label>
+                        </li>
+                    ))}
+                </ul>
+            )
+        }
+
+        function BucketList() {
+
+            const [myList, setMyList] = React.useState(initialList)
+            const [yourList, setYourList] = React.useState(initialList)
+
+            const handleToggleMyList = (artworkId, nextSeen) => {
+                const myNextList = [...myList]
+                const artwork = myNextList.find(a => a.id === artworkId)
+                artwork.seen = nextSeen;
+                setMyList(myNextList)
+            }
+
+            const handleToggleYourList = (artworkId, nextSeen) => {
+                const yourNextList = [...yourList]
+                const artwork = yourNextList.find(a => a.id === artworkId)
+                artwork.seen = nextSeen
+                setYourList(yourNextList)
+            }
+
+            return (
+                <>
+                    <h1>Art Bucket List</h1>
+                    <h2>My list of art to see:</h2>
+                    <ItemList
+                        artworks={myList}
+                        onToggle={handleToggleMyList} />
+                    <h2>Your list of art to see:</h2>
+                    <ItemList
+                        artworks={yourList}
+                        onToggle={handleToggleYourList} />
+                </>
+            )
+
+        }
+
+        function IncorrectApp() {
+            return <BucketList/>
+        }
+
+        // 获取一个页面根节点
+        const incorrectAppNode = document.getElementById('incorrect-app')
+        // 创建一个react实例
+        const incorrectApp = ReactDOM.createRoot(incorrectAppNode)
+        // 使用根实例渲染一个jsx组件
+        incorrectApp.render(React.createElement(IncorrectApp))
+
+
+        const initialList2 = [
+            { id: 0, title: 'Big Bellies', seen: false },
+            { id: 1, title: 'Lunar Landscape', seen: false },
+            { id: 2, title: 'Terracotta Army', seen: true }
+        ]
+
+        function ItemList2({ artworks, onToggle }) {
+            return (
+                <ul>
+                    {artworks.map(artwork => (
+                        <li key={artwork.id}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={artwork.seen}
+                                    onChange={e => onToggle(artwork.id, e.target.checked)}
+                                />
+                                {artwork.title}
+                            </label>
+                        </li>
+                    ))}
+                </ul>
+            )
+        }
+
+        function BucketList2() {
+
+            const [myList, setMyList] = React.useState(initialList)
+            const [yourList, setYourList] = React.useState(initialList)
+
+            const handleToggleMyList = (artworkId, nextSeen) => {
+                setMyList(myList.map(artwork => {
+                    if (artwork.id === artworkId) {
+                        // Create a *new* object with changes
+                        return { ...artwork, seen: nextSeen }
+                    } else {
+                        // No changes
+                        return artwork
+                    }
+                }))
+            }
+
+            const handleToggleYourList = (artworkId, nextSeen) => {
+                setYourList(yourList.map(artwork => {
+                    if (artwork.id === artworkId) {
+                        // Create a *new* object with changes
+                        return { ...artwork, seen: nextSeen }
+                    } else {
+                        // No changes
+                        return artwork
+                    }
+                }))
+            }
+
+            return (
+                <>
+                    <h1>Art Bucket List</h1>
+                    <h2>My list of art to see:</h2>
+                    <ItemList2
+                        artworks={myList}
+                        onToggle={handleToggleMyList} />
+                    <h2>Your list of art to see:</h2>
+                    <ItemList2
+                        artworks={yourList}
+                        onToggle={handleToggleYourList} />
+                </>
+            )
+
+        }
+
+        function CorrectApp() {
+            return <BucketList2/>
+        }
+
+        // 获取一个页面根节点
+        const correctAppNode = document.getElementById('correct-app')
+        // 创建一个react实例
+        const correctApp = ReactDOM.createRoot(correctAppNode)
+        // 使用根实例渲染一个jsx组件
+        correctApp.render(React.createElement(CorrectApp))
+    </script>
+</body>
+</html>

@@ -1,5 +1,9 @@
 import './App.scss'
 import {useEffect} from 'react'
+import {Outlet} from 'react-router-dom'
+
+import AppHeader from './components/AppHeader'
+import AppTabs from './components/AppTabs'
 
 function App() {
   useEffect(() => {
@@ -15,7 +19,9 @@ function App() {
 
   return (
     <div className="App">
-      Hello world!
+        <AppHeader />
+        <AppTabs/>
+        <Outlet/>
     </div>
   )
 }
