@@ -1,25 +1,32 @@
 import './index.scss'
-import Api from '../../api'
-import {useEffect, useState} from 'react'
 
-function AppHeader() {
+function AppHeader({seller}) {
+    return <div className="app-header">
+        <div className="app-header-wrapper">
+           <div className="avatar">
+               <img className="avatar-img" src={seller.avatar} alt={seller.name}/>
+           </div>
+           <div className="content">
+               <div className="title">
+                   <span className="brand"></span>
+                   <span className="name">{seller.name}</span>
+               </div>
 
-    const [seller, setSeller] = useState(null)
+               <div className="description">
+                   {seller.description}/{seller.deliveryTime}分钟送达
+               </div>
 
-    useEffect(() => {
-        async function fetchSeller() {
-            const sellerData = await Api.getSeller()
-            if (!ignore) {
-                setSeller(sellerData)
-            }
-        }
+               {seller.supports && <div className="support">
+                   <span className="icon"></span>
+                   <span className="text">{seller.supports[0].description}</span>
+               </div>}
 
-        let ignore = false
-        fetchSeller()
-        return () => ignore = true
-    }, [])
+           </div>
+        </div>
+        <div className="bulletin-wrapper">
 
-    return <div className="app-header">{seller.name}</div>
+        </div>
+    </div>
 }
 
 export default AppHeader
