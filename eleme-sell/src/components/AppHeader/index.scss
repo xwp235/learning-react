@@ -6,16 +6,20 @@
   background-color: #000;
   .app-header-wrapper {
     padding: .24rem .12rem .18rem .24rem;
+    font-size:0;
     .avatar,.content {
       display: inline-block;
     }
     .avatar {
+       vertical-align: top;
        .avatar-img {
          width:.64rem;
          height:.64rem;
+         border-radius: .02rem;
        }
     }
     .content {
+      display: inline-block;
       margin-left: .16rem;
       .title {
         margin: .02rem 0 .08rem 0;
@@ -33,6 +37,44 @@
           font-size: .16rem;
           line-height: .18rem;
           font-weight: bold;
+        }
+      }
+      .description {
+        margin-bottom: .1rem;
+        line-height: .12rem;
+        font-size: .12rem;
+      }
+      .support {
+        .icon {
+          display: inline-block;
+          vertical-align: top;
+          width:.12rem;
+          height: .12rem;
+          margin-right: .04rem;
+          background-size: .12rem .12rem;
+          background-repeat: no-repeat;
+          &.decrease {
+            @include mixin.bg-image('decrease_1')
+          }
+          &.discount {
+            @include mixin.bg-image('discount_1')
+          }
+          &.discount {
+            @include mixin.bg-image('discount_1')
+          }
+          &.guarantee {
+            @include mixin.bg-image('guarantee_1')
+          }
+          &.invoice {
+            @include mixin.bg-image('invoice_1')
+          }
+          &.special {
+            @include mixin.bg-image('special_1')
+          }
+        }
+        .text {
+          line-height: .12rem;
+          font-size: .12rem;
         }
       }
     }

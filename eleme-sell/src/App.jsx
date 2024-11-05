@@ -9,7 +9,7 @@ import Api from './api'
 
 function App() {
 
-  const [seller, setSeller] = useState({})
+  const [seller, setSeller] = useState(null)
 
   useEffect(() => {
     // 设置根元素的字体大小
@@ -36,7 +36,7 @@ function App() {
 
   return (
     <div className="App">
-        <AppHeader seller={seller}/>
+        {seller && <AppHeader seller={seller}/>}
         <AppTabs/>
         <Outlet/>
     </div>
