@@ -108,13 +108,6 @@
         // 使用根实例渲染一个jsx组件
         incorrectApp.render(React.createElement(IncorrectApp))
 
-
-        const initialList2 = [
-            { id: 0, title: 'Big Bellies', seen: false },
-            { id: 1, title: 'Lunar Landscape', seen: false },
-            { id: 2, title: 'Terracotta Army', seen: true }
-        ]
-
         function ItemList2({ artworks, onToggle }) {
             return (
                 <ul>

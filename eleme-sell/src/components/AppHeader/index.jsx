@@ -1,9 +1,10 @@
 import './index.scss'
 
+const supportClasses = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
+
 function AppHeader({seller}) {
 
-    const supportClasses = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
-    const supportClass = supportClasses[seller.supports[0].type]
+    const iconCls = `icon ${supportClasses[seller.supports[0].type]}`
 
     return <div className="app-header">
         <div className="app-header-wrapper">
@@ -21,7 +22,7 @@ function AppHeader({seller}) {
                </div>
 
                {seller.supports && <div className="support">
-                   <i className={`icon ${supportClass}`}></i>
+                   <i className={iconCls}></i>
                    <span className="text">{seller.supports[0].description}</span>
                </div>}
 

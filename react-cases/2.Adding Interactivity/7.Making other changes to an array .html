@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>对数组进行其他更改</title>
+</head>
+<body>
+<section>
+    有些操作无法仅通过扩展语法（spread syntax）和像 map() 和 filter() 这样的非变异方法来完成。例如，您可能想要反转或排序一个数组。JavaScript 的 reverse() 和 sort() 方法会直接修改原始数组，因此您不能直接使用它们。
+</section>
+<section>
+    不过，您可以先复制这个数组，然后对其进行更改。
+</section>
+    <div id="correct-app"></div>
+<section>
+    在这里，你使用 [...list] 扩展语法首先创建了原始数组的一个副本。现在有了副本，你就可以使用像 nextList.reverse() 或 nextList.sort() 这样的变异方法，甚至可以使用 nextList[0] = "something" 来修改单个项目。
+</section>
+<section>
+    但是，即使复制了数组，也不能直接更改数组中现有的项目。这是因为复制是浅拷贝的——新数组中的项目与原始数组中的项目是相同的引用。因此，如果你修改了复制数组中的某个对象，实际上是在改变原始状态。
+</section>
+<section>
+    尽管 nextList 和 list 是两个不同的数组，但 nextList[0] 和 list[0] 指向的是同一个对象。所以，当你更改 nextList[0].seen 时，实际上也在更改 list[0].seen。这是一个状态变异，应该尽量避免！你可以用类似于更新嵌套 JavaScript 对象的方式来解决这个问题——通过复制你想更改的单个项目，而不是直接修改它们。下面是具体操作方法。
+</section>
+
+    <script src="../../scripts/@babel/7.26.0/babel.min.js"></script>
+    <script src="../../scripts/react/18.3.1/react.development.js"></script>
+    <script src="../../scripts/react/18.3.1/react-dom.development.js"></script>
+    <script type="text/babel">
+        const initialList = [
+            { id: 0, title: 'Big Bellies' },
+            { id: 1, title: 'Lunar Landscape' },
+            { id: 2, title: 'Terracotta Army' },
+        ];
+
+        function List() {
+            const [list, setList] = React.useState(initialList);
+
+            function handleClick() {
+                const nextList = [...list];
+                nextList.reverse();
+                setList(nextList);
+            }
+
+            return (
+                <>
+                    <button onClick={handleClick}>
+                        Reverse
+                    </button>
+                    <ul>
+                        {list.map(artwork => (
+                            <li key={artwork.id}>{artwork.title}</li>
+                        ))}
+                    </ul>
+                </>
+            );
+        }
+
+
+        function CorrectApp() {
+            return <List/>
+        }
+
+        // 获取一个页面根节点
+        const correctAppNode = document.getElementById('correct-app')
+        // 创建一个react实例
+        const correctApp = ReactDOM.createRoot(correctAppNode)
+        // 使用根实例渲染一个jsx组件
+        correctApp.render(React.createElement(CorrectApp))
+    </script>
+</body>
+</html>
