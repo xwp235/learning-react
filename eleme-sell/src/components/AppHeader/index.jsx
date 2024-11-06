@@ -27,9 +27,18 @@ function AppHeader({seller}) {
                </div>}
 
            </div>
+            {seller.supports && <div className="support-count">
+                <span className="count">{seller.supports.length}个</span>
+                <i className="icon-keyboard_arrow_right"></i>
+            </div>}
         </div>
         <div className="bulletin-wrapper">
-
+            <span className="bulletin-title"></span>
+            <span className="bulletin-text">{seller.bulletin}</span>
+            <i className="icon-keyboard_arrow_right"></i>
+        </div>
+        <div className="background">
+            <img src={seller.avatar} width="100%" height="100%" alt="background"/>
         </div>
     </div>
 }
