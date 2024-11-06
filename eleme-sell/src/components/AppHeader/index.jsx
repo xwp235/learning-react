@@ -1,4 +1,6 @@
 import './index.scss'
+import Star from '../Star'
+import {useState} from 'react'
 
 const supportClasses = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
 
@@ -47,6 +49,32 @@ function AppHeader({seller}) {
             <div className="detail-wrapper clearfix">
                 <div className="detail-main">
                     <h1 className="name">{seller.name}</h1>
+                    <div className="star-wrapper">
+                        <Star size={48} score={seller.score}/>
+                    </div>
+                    <div className="title">
+                        <div className="line"></div>
+                        <div className="text">优惠信息</div>
+                        <div className="line"></div>
+                    </div>
+                    {seller.supports && <ul className="supports">
+                        {
+                            seller.supports.map((item, index) => <li className="support-item" key={index}>
+                                <i className={`icon ${supportClasses[item.type]}`}></i>
+                                <span className="text">{item.description}</span>
+                            </li>)
+                        }
+                    </ul>}
+                    <div className="title">
+                        <div className="line"></div>
+                        <div className="text">商家公告</div>
+                        <div className="line"></div>
+                    </div>
+                    <div className="bulletin">
+                        <p className="content">
+                            {seller.bulletin}
+                        </p>
+                    </div>
                 </div>
             </div>
             <div className="detail-close">

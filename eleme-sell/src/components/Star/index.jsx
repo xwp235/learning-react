@@ -1,3 +1,5 @@
+import './index.scss'
+
 const STAR_LEN = 5
 const STAR_CLS_ON = 'on'
 const STAR_CLS_HALF = 'half'

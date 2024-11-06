@@ -165,6 +165,79 @@
           font-size: .16rem;
           font-weight: 700;
         }
+        .star-wrapper {
+          margin-top:.18rem;
+          padding: .02rem 0;
+          text-align: center;
+        }
+        .title {
+          display: flex;
+          width: 80%;
+          margin: .28rem auto .24rem auto;
+          .line {
+            position: relative;
+            flex: 1;
+            top: -0.06rem;
+            border-bottom: .01rem solid rgba(255,255,255,.2);
+          }
+          .text {
+            padding: 0 .12rem;
+            font-size: .14rem;
+            font-weight: 700;
+          }
+        }
+        .supports {
+          width: 80%;
+          margin: 0 auto;
+          .support-item {
+            margin-bottom: .12rem;
+            padding: 0 .12rem;
+            font-size:0;
+            &:last-child {
+              margin-bottom:0;
+            }
+            .icon {
+              display:inline-block;
+              margin-right: .06rem;
+              width: .16rem;
+              height: .16rem;
+              vertical-align: top;
+              background-size: .16rem .16rem;
+              background-repeat: no-repeat;
+              &.decrease {
+                @include mixin.bg-image('decrease_2')
+              }
+              &.discount {
+                @include mixin.bg-image('discount_2')
+              }
+              &.discount {
+                @include mixin.bg-image('discount_2')
+              }
+              &.guarantee {
+                @include mixin.bg-image('guarantee_2')
+              }
+              &.invoice {
+                @include mixin.bg-image('invoice_2')
+              }
+              &.special {
+                @include mixin.bg-image('special_2')
+              }
+            }
+            .text {
+              line-height: .16rem;
+              font-size: .12rem;
+            }
+          }
+        }
+        .bulletin {
+          width: 80%;
+          margin: 0 auto;
+          .content {
+            padding: 0 .12rem;
+            line-height: .24rem;
+            font-size: .12rem;
+          }
+        }
       }
     }
     .detail-close {
