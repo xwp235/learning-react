@@ -10,9 +10,9 @@ function Star({size, score}) {
    const hasDecimal = starScore % 1 !== 0
    const integer = Math.floor(score)
    const starClasses = [
-       ...Array(integer).fill(STAR_CLS_ON),
-       hasDecimal ? STAR_CLS_HALF : null,
-       ...Array(STAR_LEN - integer - (hasDecimal ? 1 : 0)).fill(STAR_CLS_OFF)
+       ...Array(integer).fill(STAR_CLS_ON), // 填充已亮的星星
+       ...(hasDecimal ? [STAR_CLS_HALF] : []), // 如果有半颗星就插入half类，否则不插入
+       ...Array(STAR_LEN - integer - (hasDecimal ? 1 : 0)).fill(STAR_CLS_OFF) // 填充未亮的星星
    ]
 
    return <div className={starCls}>
