@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>从数组中删除元素</title>
+</head>
+<body>
+<section>
+    从数组中删除一个元素的最简单方法是将其过滤掉。换句话说，你将生成一个不包含该元素的新数组。要实现这一点，可以使用 filter 方法，例如：
+</section>
+<div id="correct-app"></div>
+<section>
+    这里，artists.filter(a => a.id !== artist.id) 的意思是“创建一个数组，只包含那些 ID 不等于 artist.id 的项”。换句话说，每一项的“删除”按钮会将该项从数组中过滤掉，然后使用生成的新数组重新渲染。请注意，filter不会修改原数组。
+</section>
+
+<script src="../../../scripts/@babel/7.26.0/babel.min.js"></script>
+<script src="../../../scripts/react/18.3.1/react.development.js"></script>
+<script src="../../../scripts/react/18.3.1/react-dom.development.js"></script>
+<script type="text/babel">
+    const initialArtists = [
+        { id: 0, name: 'Marta Colvin Andrade' },
+        { id: 1, name: 'Lamidi Olonade Fakeye'},
+        { id: 2, name: 'Louise Nevelson'}
+    ]
+
+    function List() {
+        const [artists, setArtists] = React.useState(
+            initialArtists
+        )
+
+        return (
+            <>
+                <h1>Inspiring sculptors:</h1>
+                <ul>
+                    {artists.map(artist => (
+                        <li key={artist.id}>
+                            {artist.name}{' '}
+                            <button onClick={() => {
+                                setArtists(
+                                    artists.filter(a =>
+                                        a.id !== artist.id
+                                    )
+                                );
+                            }}>Delete</button>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        );
+    }
+
+
+    function CorrectApp() {
+        return <List/>
+    }
+
+    // 获取一个页面根节点
+    const correctAppNode = document.getElementById('correct-app')
+    // 创建一个react实例
+    const correctApp = ReactDOM.createRoot(correctAppNode)
+    // 使用根实例渲染一个jsx组件
+    correctApp.render(React.createElement(CorrectApp))
+</script>
+</body>
+</html>

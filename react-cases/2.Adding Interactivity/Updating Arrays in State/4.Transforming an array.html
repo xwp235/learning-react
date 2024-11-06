@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>转换数组</title>
+</head>
+<body>
+<section>
+    如果你想更改数组中的部分或全部元素，可以使用 map() 方法来创建一个新数组。你传递给 map 的函数可以根据每个元素的数据或索引（或两者）来决定对其进行的操作。
+</section>
+<section>
+    在这个例子中，一个数组保存了两个圆形和一个正方形的坐标。当你按下按钮时，它仅将两个圆形向下移动了 50 像素。实现方法是使用 map() 生成一个新的数据数组：
+</section>
+<div id="correct-app"></div>
+
+<script src="../../../scripts/@babel/7.26.0/babel.min.js"></script>
+<script src="../../../scripts/react/18.3.1/react.development.js"></script>
+<script src="../../../scripts/react/18.3.1/react-dom.development.js"></script>
+<script type="text/babel">
+    const initialShapes = [
+        { id: 0, type: 'circle', x: 50, y: 100 },
+        { id: 1, type: 'square', x: 150, y: 100 },
+        { id: 2, type: 'circle', x: 250, y: 100 },
+    ]
+
+    function ShapeEditor() {
+        const [shapes, setShapes] = React.useState(
+            initialShapes
+        )
+
+        function handleClick() {
+            const nextShapes = shapes.map(shape => {
+                if (shape.type === 'square') {
+                    // No change
+                    return shape;
+                } else {
+                    // Return a new circle 50px below
+                    return {
+                        ...shape,
+                        y: shape.y + 50,
+                    };
+                }
+            });
+            // Re-render with the new array
+            setShapes(nextShapes)
+        }
+
+        return (
+            <>
+                <button onClick={handleClick}>
+                    Move circles down!
+                </button>
+                {shapes.map(shape => (
+                    <div
+                        key={shape.id}
+                        style={{
+                            background: 'purple',
+                            position: 'absolute',
+                            left: shape.x,
+                            top: shape.y,
+                            borderRadius:
+                                shape.type === 'circle'
+                                    ? '50%' : '',
+                            width: 20,
+                            height: 20,
+                        }} />
+                ))}
+            </>
+        )
+    }
+
+
+    function CorrectApp() {
+        return <ShapeEditor/>
+    }
+
+    // 获取一个页面根节点
+    const correctAppNode = document.getElementById('correct-app')
+    // 创建一个react实例
+    const correctApp = ReactDOM.createRoot(correctAppNode)
+    // 使用根实例渲染一个jsx组件
+    correctApp.render(React.createElement(CorrectApp))
+</script>
+</body>
+</html>

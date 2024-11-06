@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>在数组中插入元素</title>
+</head>
+<body>
+<section>
+    有时，你可能希望在特定位置插入一个元素，而这个位置既不是在数组的开头，也不是在结尾。为此，你可以使用数组的展开语法（...）以及 slice() 方法。slice() 方法允许你“切割”数组的一部分。要插入一个元素，你可以创建一个新的数组，首先展开插入点之前的部分，然后插入新的元素，最后再添加原数组剩下的部分。
+</section>
+<div id="correct-app"></div>
+
+<script src="../../../scripts/@babel/7.26.0/babel.min.js"></script>
+<script src="../../../scripts/react/18.3.1/react.development.js"></script>
+<script src="../../../scripts/react/18.3.1/react-dom.development.js"></script>
+<script type="text/babel">
+    let nextId = 3
+    const initialArtists = [
+        { id: 0, name: 'Marta Colvin Andrade' },
+        { id: 1, name: 'Lamidi Olonade Fakeye'},
+        { id: 2, name: 'Louise Nevelson'},
+    ]
+
+    function List() {
+        const [name, setName] = React.useState('')
+        const [artists, setArtists] = React.useState(
+            initialArtists
+        )
+
+        function handleClick() {
+            const insertAt = 1
+            const nextArtists = [
+                // Items before the insertion point:
+                ...artists.slice(0, insertAt),
+                // New item:
+                { id: nextId++, name },
+                // Items after the insertion point:
+                ...artists.slice(insertAt)
+            ]
+            setArtists(nextArtists)
+            setName('')
+        }
+
+        return (
+            <>
+                <h1>Inspiring sculptors:</h1>
+                <input
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                />
+                <button onClick={handleClick}>
+                    Insert
+                </button>
+                <ul>
+                    {artists.map(artist => (
+                        <li key={artist.id}>{artist.name}</li>
+                    ))}
+                </ul>
+            </>
+        )
+    }
+
+    function CorrectApp() {
+        return <List/>
+    }
+
+    // 获取一个页面根节点
+    const correctAppNode = document.getElementById('correct-app')
+    // 创建一个react实例
+    const correctApp = ReactDOM.createRoot(correctAppNode)
+    // 使用根实例渲染一个jsx组件
+    correctApp.render(React.createElement(CorrectApp))
+</script>
+</body>
+</html>

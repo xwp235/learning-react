@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>使用Immer编写简洁的更新逻辑</title>
+</head>
+<body>
+    <section>
+        在不修改的情况下更新嵌套数组可能会有些重复。就像处理对象一样：
+    </section>
+    <section>
+        通常，你不需要更新超过几层深的状态。如果你的状态对象非常深，可能需要重新设计它们的结构，使其变得更扁平。 如果你不想改变状态结构，可能更倾向于使用 Immer，它允许你使用便捷但会修改的语法，并会自动处理复制的过程。
+    </section>
+    <section>
+        以下是使用Immer重写的Art Bucket List示例：
+    </section>
+    <div id="correct-app"></div>
+
+    <script src="../../../scripts/@babel/7.26.0/babel.min.js"></script>
+    <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/immer@6.0.3/dist/immer.umd.production.min.js"></script>
+    <script type="text/babel">
+        const { produce } = immer
+        const {useState} = React
+
+        const initialList = [
+            { id: 0, title: 'Big Bellies', seen: false },
+            { id: 1, title: 'Lunar Landscape', seen: false },
+            { id: 2, title: 'Terracotta Army', seen: true },
+        ]
+
+        function BucketList() {
+            const [myList, updateMyList] = useState(
+                initialList
+            )
+            const [yourList, updateYourList] = useState(
+                initialList
+            )
+
+            function handleToggleMyList(id, nextSeen) {
+                updateMyList(
+                    currentList => produce(currentList, draft => {
+                       const artwork = draft.find(a => a.id === id)
+                        artwork.seen = nextSeen
+                    })
+                )
+            }
+
+            function handleToggleYourList(artworkId, nextSeen) {
+                updateYourList(currentList => produce(currentList, draft => {
+                    const artwork = draft.find(a => a.id === artworkId)
+                    artwork.seen = nextSeen
+                }))
+            }
+
+            return (
+                <>
+                    <h1>Art Bucket List</h1>
+                    <h2>My list of art to see:</h2>
+                    <ItemList
+                        artworks={myList}
+                        onToggle={handleToggleMyList} />
+                    <h2>Your list of art to see:</h2>
+                    <ItemList
+                        artworks={yourList}
+                        onToggle={handleToggleYourList} />
+                </>
+            );
+        }
+
+        function ItemList({ artworks, onToggle }) {
+            return (
+                <ul>
+                    {artworks.map(artwork => (
+                        <li key={artwork.id}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={artwork.seen}
+                                    onChange={e => {
+                                        onToggle(
+                                            artwork.id,
+                                            e.target.checked
+                                        );
+                                    }}
+                                />
+                                {artwork.title}
+                            </label>
+                        </li>
+                    ))}
+                </ul>
+            );
+        }
+
+        function CorrectApp() {
+            return <BucketList/>
+        }
+
+        // 获取一个页面根节点
+        const correctAppNode = document.getElementById('correct-app')
+        // 创建一个react实例
+        const correctApp = ReactDOM.createRoot(correctAppNode)
+        // 使用根实例渲染一个jsx组件
+        correctApp.render(React.createElement(CorrectApp))
+    </script>
+</body>
+</html>

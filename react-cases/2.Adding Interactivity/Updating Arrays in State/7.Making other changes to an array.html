@@ -25,9 +25,9 @@
     尽管 nextList 和 list 是两个不同的数组，但 nextList[0] 和 list[0] 指向的是同一个对象。所以，当你更改 nextList[0].seen 时，实际上也在更改 list[0].seen。这是一个状态变异，应该尽量避免！你可以用类似于更新嵌套 JavaScript 对象的方式来解决这个问题——通过复制你想更改的单个项目，而不是直接修改它们。下面是具体操作方法。
 </section>
 
-    <script src="../../scripts/@babel/7.26.0/babel.min.js"></script>
-    <script src="../../scripts/react/18.3.1/react.development.js"></script>
-    <script src="../../scripts/react/18.3.1/react-dom.development.js"></script>
+    <script src="../../../scripts/@babel/7.26.0/babel.min.js"></script>
+    <script src="../../../scripts/react/18.3.1/react.development.js"></script>
+    <script src="../../../scripts/react/18.3.1/react-dom.development.js"></script>
     <script type="text/babel">
         const initialList = [
             { id: 0, title: 'Big Bellies' },

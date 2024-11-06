@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>不通过修改来更新数组</title>
+</head>
+<body>
+<section>
+    在JavaScript中，数组只是另一种对象。和对象一样，你应该将 React 状态中的数组视为只读的。这意味着你不应重新分配数组中的元素（例如 arr[0] = 'bird'），也不应使用会修改数组的方法，例如 push() 和 pop()。
+</section>
+<section>
+    相反，每次你想更新数组时，应该将一个新数组传递给状态设置函数。为此，可以通过调用 filter() 和 map() 等非修改方法，从状态中的原数组创建一个新数组。然后，你可以将状态设置为生成的新数组。
+</section>
+<section>
+    以下是常见数组操作的参考表。在处理 React 状态中的数组时，你需要避免使用左列中的方法，转而使用右列中的方法：
+</section>
+<table><thead><tr><th></th><th>avoid (mutates the array)</th><th>prefer (returns a new array)</th></tr></thead><tbody><tr><td>adding</td><td><code dir="ltr" class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">push</code>, <code dir="ltr" class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">unshift</code></td><td><code dir="ltr" class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">concat</code>, <code dir="ltr" class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">[...arr]</code> spread syntax (<a class="inline text-link dark:text-link-dark border-b border-link border-opacity-0 hover:border-opacity-100 duration-100 ease-in transition leading-normal" href="#adding-to-an-array">example</a>)</td></tr><tr><td>removing</td><td><code dir="ltr" class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">pop</code>, <code dir="ltr" class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">shift</code>, <code dir="ltr" class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">splice</code></td><td><code dir="ltr" class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">filter</code>, <code dir="ltr" class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">slice</code> (<a class="inline text-link dark:text-link-dark border-b border-link border-opacity-0 hover:border-opacity-100 duration-100 ease-in transition leading-normal" href="#removing-from-an-array">example</a>)</td></tr><tr><td>replacing</td><td><code dir="ltr" class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">splice</code>, <code dir="ltr" class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">arr[i] = ...</code> assignment</td><td><code dir="ltr" class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">map</code> (<a class="inline text-link dark:text-link-dark border-b border-link border-opacity-0 hover:border-opacity-100 duration-100 ease-in transition leading-normal" href="#replacing-items-in-an-array">example</a>)</td></tr><tr><td>sorting</td><td><code dir="ltr" class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">reverse</code>, <code dir="ltr" class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">sort</code></td><td>copy the array first (<a class="inline text-link dark:text-link-dark border-b border-link border-opacity-0 hover:border-opacity-100 duration-100 ease-in transition leading-normal" href="#making-other-changes-to-an-array">example</a>)</td></tr></tbody></table>
+<section>
+    <p>另外，你可以使用 Immer，它允许你同时使用两列中的方法。</p>
+    <h3>陷阱</h3>
+    <p>不幸的是，slice 和 splice 名字相似，但它们的功能却大不相同：</p>
+    <p>slice 让你复制整个数组或其一部分。</p>
+    <p>splice 会修改数组（用于插入或删除元素）。</p>
+    <p>在 React 中，你将更常使用 slice（没有 p！），因为你不想修改状态中的对象或数组。《更新对象》一文解释了什么是修改（mutation）以及为什么在状态中不推荐使用它。</p>
+</section>
+<div id="correct-app"></div>
+
+<script src="../../../scripts/@babel/7.26.0/babel.min.js"></script>
+<script src="../../../scripts/react/18.3.1/react.development.js"></script>
+<script src="../../../scripts/react/18.3.1/react-dom.development.js"></script>
+<script type="text/babel">
+    function CorrectApp() {
+        return <div>Hello React</div>
+    }
+
+    // 获取一个页面根节点
+    const correctAppNode = document.getElementById('correct-app')
+    // 创建一个react实例
+    const correctApp = ReactDOM.createRoot(correctAppNode)
+    // 使用根实例渲染一个jsx组件
+    correctApp.render(React.createElement(CorrectApp))
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>替换数组中的元素</title>
+</head>
+<body>
+<section>
+    通常，我们可能希望替换数组中的一个或多个元素。直接赋值，例如 arr[0] = 'bird' 会修改原数组，因此更推荐使用 map 方法来实现替换。
+</section>
+<section>
+    要替换一个元素，可以用 map 创建一个新数组。在 map 调用中，你会获得元素的索引作为第二个参数。利用它来决定是返回原始元素（第一个参数）还是替换成其他内容：
+</section>
+<div id="correct-app"></div>
+
+<script src="../../../scripts/@babel/7.26.0/babel.min.js"></script>
+<script src="../../../scripts/react/18.3.1/react.development.js"></script>
+<script src="../../../scripts/react/18.3.1/react-dom.development.js"></script>
+<script type="text/babel">
+    const initialCounters = [
+        0, 0, 0
+    ]
+
+    function CounterList() {
+        const [counters, setCounters] = React.useState(
+            initialCounters
+        )
+
+        function handleIncrementClick(index) {
+            const nextCounters = counters.map((c, i) => {
+                if (i === index) {
+                    // Increment the clicked counter
+                    return c + 1;
+                } else {
+                    // The rest haven't changed
+                    return c;
+                }
+            })
+            setCounters(nextCounters)
+        }
+
+        return (
+            <ul>
+                {counters.map((counter, i) => (
+                    <li key={i}>
+                        {counter}
+                        <button onClick={() => {
+                            handleIncrementClick(i);
+                        }}>+1</button>
+                    </li>
+                ))}
+            </ul>
+        );
+    }
+
+
+    function CorrectApp() {
+        return <CounterList/>
+    }
+
+    // 获取一个页面根节点
+    const correctAppNode = document.getElementById('correct-app')
+    // 创建一个react实例
+    const correctApp = ReactDOM.createRoot(correctAppNode)
+    // 使用根实例渲染一个jsx组件
+    correctApp.render(React.createElement(CorrectApp))
+</script>
+</body>
+</html>
