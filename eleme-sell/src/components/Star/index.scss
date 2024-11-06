@@ -1,0 +1,67 @@
+@use '../../common/scss/mixin';
+
+.star {
+  font-size: 0;
+  &.star-48,&.star-36,&.star-24 {
+    .star-item {
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+  &.star-48 {
+    .start-item {
+      width: .2rem;
+      height: .2rem;
+      margin-right: .22rem;
+      background-size: .2rem .2rem;
+      &.on {
+        @include mixin.bg-image('star48_on')
+      }
+      &.half {
+        @include mixin.bg-image('star48_half')
+      }
+      &.off {
+        @include mixin.bg-image('star48_off')
+      }
+    }
+  }
+  &.star-36 {
+    .start-item {
+      width: .15rem;
+      height: .15rem;
+      margin-right: .06rem;
+      background-size: .15rem .15rem;
+      &.on {
+        @include mixin.bg-image('star36_on')
+      }
+      &.half {
+        @include mixin.bg-image('star36_half')
+      }
+      &.off {
+        @include mixin.bg-image('star36_off')
+      }
+    }
+  }
+  &.star-24 {
+    .start-item {
+      width: .1rem;
+      height: .1rem;
+      margin-right: .03rem;
+      background-size: .1rem .1rem;
+      &.on {
+        @include mixin.bg-image('star24_on')
+      }
+      &.half {
+        @include mixin.bg-image('star24_half')
+      }
+      &.off {
+        @include mixin.bg-image('star24_off')
+      }
+    }
+  }
+  .star-item {
+    display: inline-block;
+    background-repeat: no-repeat;
+  }
+}

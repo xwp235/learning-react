@@ -5,6 +5,9 @@ const supportClasses = ['decrease', 'discount', 'special', 'invoice', 'guarantee
 function AppHeader({seller}) {
 
     const iconCls = `icon ${supportClasses[seller.supports[0].type]}`
+    const [detailShow, setDetailShow] = useState(false)
+
+    const showDetail = () => setDetailShow(true)
 
     return <div className="app-header">
         <div className="app-header-wrapper">
@@ -27,12 +30,12 @@ function AppHeader({seller}) {
                </div>}
 
            </div>
-            {seller.supports && <div className="support-count">
+            {seller.supports && <div className="support-count" onClick={showDetail}>
                 <span className="count">{seller.supports.length}个</span>
                 <i className="icon-keyboard_arrow_right"></i>
             </div>}
         </div>
-        <div className="bulletin-wrapper">
+        <div className="bulletin-wrapper" onClick={showDetail}>
             <span className="bulletin-title"></span>
             <span className="bulletin-text">{seller.bulletin}</span>
             <i className="icon-keyboard_arrow_right"></i>
@@ -40,6 +43,16 @@ function AppHeader({seller}) {
         <div className="background">
             <img src={seller.avatar} width="100%" height="100%" alt="background"/>
         </div>
+        {detailShow && <div className="detail">
+            <div className="detail-wrapper clearfix">
+                <div className="detail-main">
+                    <h1 className="name">{seller.name}</h1>
+                </div>
+            </div>
+            <div className="detail-close">
+                <i className="icon-close"></i>
+            </div>
+        </div>}
     </div>
 }
 

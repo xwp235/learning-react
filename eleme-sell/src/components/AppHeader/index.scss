@@ -2,6 +2,7 @@
 
 .app-header {
   position: relative;
+  overflow: hidden;
   font-size: .14rem;
   color: #fff;
   background-color: rgba(7,12,27,.5);
@@ -142,5 +143,37 @@
     height:100%;
     z-index:-1;
     filter: blur(.1rem)
+  }
+  .detail {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(7,17,27,.8);
+    .detail-wrapper {
+      width: 100%;
+      min-height: 100%;
+      .detail-main {
+        margin-top: .64rem;
+        padding-bottom: .64rem;
+        .name {
+          line-height: .16rem;
+          text-align: center;
+          font-size: .16rem;
+          font-weight: 700;
+        }
+      }
+    }
+    .detail-close {
+      position: relative;
+      width: .32rem;
+      height: .32rem;
+      margin: -0.64rem auto 0 auto;
+      clear: both;
+      font-size: .32rem;
+    }
   }
 }
