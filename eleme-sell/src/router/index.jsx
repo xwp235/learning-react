@@ -1,6 +1,7 @@
 import React, {lazy, Suspense} from 'react'
 import {createBrowserRouter, Navigate} from 'react-router-dom'
 import App from '../App'
+import Loading from '../components/Loading'
 
 const Goods = lazy(() => import('../components/Goods'))
 const Ratings = lazy(() => import('../components/Ratings'))
@@ -18,19 +19,19 @@ export const router = [
             },
             {
                 path: '/goods',
-                element: <Suspense fallback={<div>Loading...</div>}>
+                element: <Suspense fallback={<Loading/>}>
                              <Goods/>
                          </Suspense>
             },
             {
                 path: '/ratings',
-                element: <Suspense fallback={<div>Loading...</div>}>
+                element: <Suspense fallback={<Loading/>}>
                     <Ratings/>
                 </Suspense>
             },
             {
                 path: '/seller',
-                element: <Suspense fallback={<div>Loading...</div>}>
+                element: <Suspense fallback={<Loading/>}>
                     <Seller/>
                 </Suspense>
             }

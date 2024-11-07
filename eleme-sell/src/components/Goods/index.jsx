@@ -1,5 +1,7 @@
 function Goods() {
-    return (<div>Goods</div>)
+    return (<div>
+        Goods
+    </div>)
 }
 
 export default Goods

@@ -1,6 +1,6 @@
 import request from '../utils/request'
 
-export default {
+const Api = {
     getSeller() {
         return request.get('/seller',null,{
             showLoading: false
@@ -17,3 +17,5 @@ export default {
         })
     }
 }
+
+export default Api

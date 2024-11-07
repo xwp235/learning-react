@@ -1,6 +1,7 @@
 import './index.scss'
 import Star from '../Star'
 import {useState} from 'react'
+import { useTransition, animated } from '@react-spring/web'
 
 const supportClasses = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
 
@@ -10,6 +11,13 @@ function AppHeader({seller}) {
     const [detailShow, setDetailShow] = useState(false)
 
     const showDetail = () => setDetailShow(true)
+
+    const fadeTransitions = useTransition(detailShow, {
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
+        leave: { opacity: 0 },
+        config: { duration: 500 }
+    });
 
     return <div className="app-header">
         <div className="app-header-wrapper">
@@ -45,42 +53,43 @@ function AppHeader({seller}) {
         <div className="background">
             <img src={seller.avatar} width="100%" height="100%" alt="background"/>
         </div>
-        {detailShow && <div className="detail">
-            <div className="detail-wrapper clearfix">
-                <div className="detail-main">
-                    <h1 className="name">{seller.name}</h1>
-                    <div className="star-wrapper">
-                        <Star size={48} score={seller.score}/>
-                    </div>
-                    <div className="title">
-                        <div className="line"></div>
-                        <div className="text">优惠信息</div>
-                        <div className="line"></div>
-                    </div>
-                    {seller.supports && <ul className="supports">
-                        {
-                            seller.supports.map((item, index) => <li className="support-item" key={index}>
-                                <i className={`icon ${supportClasses[item.type]}`}></i>
-                                <span className="text">{item.description}</span>
-                            </li>)
-                        }
-                    </ul>}
-                    <div className="title">
-                        <div className="line"></div>
-                        <div className="text">商家公告</div>
-                        <div className="line"></div>
-                    </div>
-                    <div className="bulletin">
-                        <p className="content">
-                            {seller.bulletin}
-                        </p>
+        {fadeTransitions((styles, item) => item && <animated.div key={item} style={styles} className="detail">
+                <div className="detail-wrapper clearfix">
+                    <div className="detail-main">
+                        <h1 className="name">{seller.name}</h1>
+                        <div className="star-wrapper">
+                            <Star size={48} score={seller.score}/>
+                        </div>
+                        <div className="title">
+                            <div className="line"></div>
+                            <div className="text">优惠信息</div>
+                            <div className="line"></div>
+                        </div>
+                        {seller.supports && <ul className="supports">
+                            {
+                                seller.supports.map((item, index) => <li className="support-item" key={index}>
+                                    <i className={`icon ${supportClasses[item.type]}`}></i>
+                                    <span className="text">{item.description}</span>
+                                </li>)
+                            }
+                        </ul>}
+                        <div className="title">
+                            <div className="line"></div>
+                            <div className="text">商家公告</div>
+                            <div className="line"></div>
+                        </div>
+                        <div className="bulletin">
+                            <p className="content">
+                                {seller.bulletin}
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="detail-close">
-                <i className="icon-close"></i>
-            </div>
-        </div>}
+                <div className="detail-close" onClick={() => setDetailShow(false)}>
+                    <i className="icon-close"></i>
+                </div>
+            </animated.div>
+        )}
     </div>
 }
 
