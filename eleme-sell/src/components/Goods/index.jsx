@@ -1,11 +1,21 @@
 import './index.scss'
 import Api from '../../api'
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useRef} from 'react'
+import BScroll from '@better-scroll/core'
 
 const supportClasses = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
 
 function Goods() {
     const [goods, setGoods] = useState([])
+
+    const menuWrapperRef = useRef(null)
+    const foodsWrapperRef = useRef(null)
+    const menuScrollRef = useRef(null)
+    const foodsScrollRef = useRef(null)
+
+    const handleScroll = pos => {
+        console.log('当前滚动位置', pos)
+    }
 
     useEffect(() => {
         async function fetchGoods() {
@@ -22,8 +32,46 @@ function Goods() {
         }
     }, [])
 
+    useEffect(() => {
+        if (goods.length) {
+            // 初始化 menuWrapper 的 BScroll 实例
+            if (menuWrapperRef.current) {
+                menuScrollRef.current = new BScroll(menuWrapperRef.current, {
+                    scrollX: false,
+                    scrollY: true,
+                    click: true
+                })
+            }
+
+            // 初始化 foodsWrapper 的 BScroll 实例
+            if (foodsWrapperRef.current) {
+                foodsScrollRef.current = new BScroll(foodsWrapperRef.current, {
+                    scrollX: false,
+                    scrollY: true,
+                    click: true,
+                    probeType: 3
+                })
+                // 添加 scroll 事件监听
+                foodsScrollRef.current.on('scroll', handleScroll)
+            }
+        }
+
+        // 组件卸载时销毁 BScroll 实例
+        return () => {
+          if (menuScrollRef.current) {
+              menuScrollRef.current.destroy()
+              menuScrollRef.current = null
+          }
+          if (foodsScrollRef.current) {
+              foodsScrollRef.current.off('scroll', handleScroll)
+              foodsScrollRef.current.destroy()
+              foodsScrollRef.current = null
+          }
+        }
+    }, [goods])
+
     return <div className="goods">
-        <div className="menu-wrapper">
+        <div className="menu-wrapper" ref={menuWrapperRef}>
             {goods.length > 0 && <ul>{
                 goods.map((item, index) => <li key={index} className="menu-item">
                     <p className="text border-1px">
@@ -33,7 +81,7 @@ function Goods() {
                 </li>)
             }</ul>}
         </div>
-        <div className="foods-wrapper">
+        <div className="foods-wrapper" ref={foodsWrapperRef}>
             {goods.length > 0 && <ul>
                 {
                   goods.map((item, index) => <li key={index} className="foods-list">
