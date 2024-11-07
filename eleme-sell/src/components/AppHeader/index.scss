@@ -62,9 +62,6 @@
           &.discount {
             @include mixin.bg-image('discount_1')
           }
-          &.discount {
-            @include mixin.bg-image('discount_1')
-          }
           &.guarantee {
             @include mixin.bg-image('guarantee_1')
           }
@@ -207,9 +204,6 @@
               background-repeat: no-repeat;
               &.decrease {
                 @include mixin.bg-image('decrease_2')
-              }
-              &.discount {
-                @include mixin.bg-image('discount_2')
               }
               &.discount {
                 @include mixin.bg-image('discount_2')

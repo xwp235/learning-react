@@ -1,0 +1,134 @@
+@use '../../common/scss/mixin';
+
+.goods {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  top: 1.74rem;
+  bottom: .46rem;
+  overflow: hidden;
+  .menu-wrapper {
+    flex: 0 0 .8rem;
+    width: .8rem;
+    background-color: #f3f5f7;
+    .menu-item {
+      display: table;
+      height: .54rem;
+      width: .56rem;
+      line-height: .14rem;
+      padding: 0 .12rem;
+      &.current {
+        position: relative;
+        z-index: 10;
+        margin-top: -1px;
+        background: #fff;
+        font-weight: 700;
+        .text {
+           @include mixin.border-none();
+        }
+      }
+      .text {
+        display: table-cell;
+        width: .56rem;
+        vertical-align: middle;
+        font-size: .12rem;
+        @include mixin.border-1px(rgba(7,17,27,.1));
+        .icon {
+          display: inline-block;
+          vertical-align: top;
+          width:.12rem;
+          height: .12rem;
+          margin-right: .02rem;
+          background-size: .12rem .12rem;
+          background-repeat: no-repeat;
+          &.decrease {
+            @include mixin.bg-image('./decrease_3')
+          }
+          &.discount {
+            @include mixin.bg-image('./discount_3')
+          }
+          &.guarantee {
+            @include mixin.bg-image('./guarantee_3')
+          }
+          &.invoice {
+            @include mixin.bg-image('./invoice_3')
+          }
+          &.special {
+            @include mixin.bg-image('./special_3')
+          }
+        }
+      }
+    }
+  }
+  .foods-wrapper {
+    flex: 1;
+    .title {
+      padding-left: .14rem;
+      height:.26rem;
+      line-height: .26rem;
+      border-left: .02rem solid #d9dde1;
+      font-size: .12rem;
+      color: rgb(147,153,159);
+      background-color: #f3f5f7;
+    }
+    .food-item {
+      display: flex;
+      align-items: flex-start;
+      margin: .18rem;
+      padding-bottom: .18rem;
+      @include mixin.border-1px(rgba(7,17,27,.1));
+      &:last-child {
+        margin-bottom:0;
+        @include mixin.border-none();
+      }
+      .icon {
+        display: flex;
+        align-items: flex-start;
+        flex: 0 0 .57rem;
+        margin-right: .1rem;
+        img {
+          width: .57rem;
+          height: .57rem;
+        }
+      }
+      .content {
+        flex: 1;
+        .name {
+          margin: .02rem 0 .08rem 0;
+          height: .14rem;
+          line-height: .14rem;
+          font-size: .14rem;
+          color: rgb(7, 17, 27);
+        }
+        .desc,.extra {
+          line-height: .1rem;
+          font-size: .1rem;
+          color: rgb(147, 153, 159);
+        }
+        .desc {
+          line-height: .12rem;
+          margin-bottom: .08rem;
+        }
+        .extra {
+          .count {
+            margin-right: .12rem;
+          }
+        }
+        .price {
+          font-weight: 700;
+          line-height: .24rem;
+          font-size: .14rem;
+          .now {
+            margin-right: .08rem;
+            color: rgb(240, 20, 20);
+          }
+          .old {
+            text-decoration: line-through;
+            font-size: .1rem;
+            color: rgb(147, 153, 159);
+          }
+        }
+      }
+    }
+  }
+}
