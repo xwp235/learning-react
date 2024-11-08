@@ -1,6 +1,6 @@
 import './index.scss'
 import Api from '../../api'
-import {useEffect, useState, useRef} from 'react'
+import {useEffect, useState, useRef, useCallback, useMemo} from 'react'
 import BScroll from '@better-scroll/core'
 
 const supportClasses = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
@@ -13,9 +13,26 @@ function Goods() {
     const menuScrollRef = useRef(null)
     const foodsScrollRef = useRef(null)
 
-    const handleScroll = pos => {
-        console.log('当前滚动位置', pos)
-    }
+    const [foodsListHeightArray, setFoodsListHeightArray] = useState([])
+    const [scrollY, setScrollY] = useState(0)
+
+    const currentIndex = useMemo(() => {
+        for (let i = 0; i < foodsListHeightArray.length; i++) {
+            const nextHeight = foodsListHeightArray[i + 1]
+            if (!nextHeight || (scrollY >= foodsListHeightArray[i] && scrollY < nextHeight)) {
+                return i
+            }
+        }
+        return 0
+    }, [scrollY, foodsListHeightArray])
+
+    const handleScroll = useCallback(pos => setScrollY(Math.abs(Math.round(pos.y))), [])
+
+    const handleMenuItemClick = useCallback(index => {
+        const foodList = foodsWrapperRef.current.querySelectorAll('.foods-list')
+        const targetEl = foodList[index]
+        foodsScrollRef.current.scrollToElement(targetEl, 300)
+    }, [foodsScrollRef])
 
     useEffect(() => {
         async function fetchGoods() {
@@ -32,57 +49,87 @@ function Goods() {
         }
     }, [])
 
-    useEffect(() => {
-        if (goods.length) {
-            // 初始化 menuWrapper 的 BScroll 实例
-            if (menuWrapperRef.current) {
-                menuScrollRef.current = new BScroll(menuWrapperRef.current, {
-                    scrollX: false,
-                    scrollY: true,
-                    click: true
-                })
-            }
+    const refreshScroll = useCallback(() => {
+        menuScrollRef.current?.refresh()
+        foodsScrollRef.current?.refresh()
+    }, [])
 
-            // 初始化 foodsWrapper 的 BScroll 实例
-            if (foodsWrapperRef.current) {
-                foodsScrollRef.current = new BScroll(foodsWrapperRef.current, {
-                    scrollX: false,
-                    scrollY: true,
-                    click: true,
-                    probeType: 3
-                })
-                // 添加 scroll 事件监听
-                foodsScrollRef.current.on('scroll', handleScroll)
+    const calculateFoodsListHeight = useCallback(() => {
+        const foodsList = foodsWrapperRef.current?.querySelectorAll('.foods-list')
+        let height = 0
+        const heights = [height]
+        foodsList?.forEach(item => {
+            height += item.clientHeight
+            heights.push(height)
+        })
+        setFoodsListHeightArray(heights)
+    }, [])
+
+    useEffect(() => {
+
+        const initFoodsList = () => {
+            if (goods.length) {
+                // 初始化 menuWrapper 的 BScroll 实例
+                if (menuWrapperRef.current) {
+                    menuScrollRef.current = new BScroll(menuWrapperRef.current, {
+                        scrollX: false,
+                        scrollY: true,
+                        click: true
+                    })
+                }
+
+                // 初始化 foodsWrapper 的 BScroll 实例
+                if (foodsWrapperRef.current) {
+                    foodsScrollRef.current = new BScroll(foodsWrapperRef.current, {
+                        scrollX: false,
+                        scrollY: true,
+                        click: true,
+                        probeType: 3
+                    })
+                    // 添加 scroll 事件监听
+                    foodsScrollRef.current.on('scroll', handleScroll)
+                }
+
+                calculateFoodsListHeight()
             }
         }
+        initFoodsList()
+
+        const handleResize = () => {
+            refreshScroll()
+            calculateFoodsListHeight()
+        }
+
+        window.addEventListener('resize', handleResize)
 
         // 组件卸载时销毁 BScroll 实例
         return () => {
-          if (menuScrollRef.current) {
-              menuScrollRef.current.destroy()
-              menuScrollRef.current = null
-          }
-          if (foodsScrollRef.current) {
-              foodsScrollRef.current.off('scroll', handleScroll)
-              foodsScrollRef.current.destroy()
-              foodsScrollRef.current = null
-          }
+            if (menuScrollRef.current) {
+                menuScrollRef.current.destroy()
+                menuScrollRef.current = null
+            }
+            if (foodsScrollRef.current) {
+                foodsScrollRef.current.off('scroll', handleScroll)
+                foodsScrollRef.current.destroy()
+                foodsScrollRef.current = null
+            }
+            window.removeEventListener('resize', handleResize)
         }
-    }, [goods])
+    }, [goods, calculateFoodsListHeight, refreshScroll])
 
     return <div className="goods">
         <div className="menu-wrapper" ref={menuWrapperRef}>
-            {goods.length > 0 && <ul>{
-                goods.map((item, index) => <li key={index} className="menu-item">
+            <ul>{
+                goods.map((item, index) => <li key={index} className={`menu-item ${currentIndex === index ? 'current'  : ''}`} onClick={() => handleMenuItemClick(index)}>
                     <p className="text border-1px">
                         {item.type > 0 && <i className={`icon ${supportClasses[item.type]}`}></i>}
                         {item.name}
                     </p>
                 </li>)
-            }</ul>}
+            }</ul>
         </div>
         <div className="foods-wrapper" ref={foodsWrapperRef}>
-            {goods.length > 0 && <ul>
+           <ul>
                 {
                   goods.map((item, index) => <li key={index} className="foods-list">
                       <h1 className="title">{item.name}</h1>
@@ -111,7 +158,7 @@ function Goods() {
                       }
                   </li>)
                 }
-            </ul>}
+            </ul>
         </div>
     </div>
 }

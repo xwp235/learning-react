@@ -59,6 +59,16 @@
         }
       }
     }
+    &.current {
+      position: relative;
+      z-index: 10;
+      margin-top: -0.01rem;
+      background-color: #fff;
+      font-weight: 700;
+      .text {
+        @include mixin.border-none();
+      }
+    }
   }
   .foods-wrapper {
     flex: 1;
