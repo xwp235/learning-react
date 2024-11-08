@@ -1,6 +1,7 @@
 import './index.scss'
 import Api from '../../api'
 import {useEffect, useState, useRef, useCallback, useMemo} from 'react'
+import ShoppingCart from '../ShoppingCart'
 import BScroll from '@better-scroll/core'
 
 const supportClasses = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
@@ -25,8 +26,6 @@ function Goods() {
         }
         return 0
     }, [scrollY, foodsListHeightArray])
-
-    const handleScroll = useCallback(pos => setScrollY(Math.abs(Math.round(pos.y))), [])
 
     const handleMenuItemClick = useCallback(index => {
         const foodList = foodsWrapperRef.current.querySelectorAll('.foods-list')
@@ -66,6 +65,8 @@ function Goods() {
     }, [])
 
     useEffect(() => {
+
+        const handleScroll = pos => setScrollY(Math.abs(Math.round(pos.y)))
 
         const initFoodsList = () => {
             if (goods.length) {
@@ -160,6 +161,7 @@ function Goods() {
                 }
             </ul>
         </div>
+        <ShoppingCart/>
     </div>
 }
 
