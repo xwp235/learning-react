@@ -3,10 +3,13 @@ import Api from '../../api'
 import {useEffect, useState, useRef, useCallback, useMemo} from 'react'
 import ShoppingCart from '../ShoppingCart'
 import BScroll from '@better-scroll/core'
+import { useOutletContext } from 'react-router-dom'
 
 const supportClasses = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
 
 function Goods() {
+    const {seller} = useOutletContext()
+
     const [goods, setGoods] = useState([])
 
     const menuWrapperRef = useRef(null)
@@ -161,7 +164,7 @@ function Goods() {
                 }
             </ul>
         </div>
-        <ShoppingCart/>
+        {seller && <ShoppingCart deliveryPrice={seller.deliveryPrice} minPrice={seller.minPrice}/>}
     </div>
 }
 

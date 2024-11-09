@@ -5,5 +5,95 @@
   z-index: 50;
   width:100%;
   height:.48rem;
-  background-color: #000;
+  .content {
+    display: flex;
+    background-color: #141d27;
+    font-size: 0;
+    color: rgba(255,255,255,.4);
+    .content-left {
+      flex: 1;
+      .logo-wrapper,.price,.desc {
+        display: inline-block;
+        vertical-align: top;
+        box-sizing: border-box;
+      }
+      .logo-wrapper {
+        position: relative;
+        margin: 0 .12rem;
+        top: -0.1rem;
+        padding: .06rem;
+        width: .56rem;
+        height: .56rem;
+        border-radius: 50%;
+        background-color: #141d27;
+        .logo {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          background-color: #2b343c;
+          text-align: center;
+          .icon {
+            font-size: .24rem;
+            line-height: .44rem;
+            color: #80858a;
+          }
+          &.highlight {
+            background-color: rgba(0,160,220);
+            .icon {
+              color: #fff;
+            }
+          }
+        }
+        .num {
+          position: absolute;
+          top:0;
+          right:0;
+          width: .24rem;
+          height: .16rem;
+          line-height: .16rem;
+          text-align: center;
+          border-radius: .16rem;
+          font-size:.09rem;
+          font-weight: 700;
+          color:#fff;
+          background-color: rgb(240,20,20);
+          box-shadow: 0 .04rem .08rem 0 rgba(0,0,0,.4);
+        }
+      }
+      .price {
+        margin-top:.12rem;
+        line-height: .24rem;
+        padding-right:.12rem;
+        border-right: .01rem solid rgba(255,255,255,.1);
+        font-size: .16rem;
+        font-weight: 700;
+        &.highlight {
+          color: #fff;
+        }
+      }
+      .desc {
+         line-height: .24rem;
+         margin:.12rem 0 0 .12rem;
+         font-size: .1rem;
+      }
+    }
+    .content-right {
+      flex:0 0 1.05rem;
+      width: 1.05rem;
+      .pay {
+        height:.48rem;
+        line-height: .48rem;
+        text-align: center;
+        font-size: .12rem;
+        font-weight: 700;
+        &.not-enough {
+          background-color: #2b333b;
+        }
+        &.enough {
+          background-color: #00b43c;
+          color: #fff;
+        }
+      }
+    }
+  }
 }

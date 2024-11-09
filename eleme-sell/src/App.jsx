@@ -1,6 +1,6 @@
 import './App.scss'
 import {useEffect, useState} from 'react'
-import {Outlet} from 'react-router-dom'
+import {Outlet, useLocation} from 'react-router-dom'
 
 import AppHeader from './components/AppHeader'
 import AppTabs from './components/AppTabs'
@@ -10,6 +10,7 @@ import Api from './api'
 function App() {
 
   const [seller, setSeller] = useState(null)
+  const location = useLocation()
 
   useEffect(() => {
     // 设置根元素的字体大小
@@ -38,7 +39,7 @@ function App() {
     <div className="App">
         {seller && <AppHeader seller={seller}/>}
         <AppTabs/>
-        <Outlet/>
+        <Outlet context={location.pathname === '/goods' ? {seller} : null}/>
     </div>
   )
 }
